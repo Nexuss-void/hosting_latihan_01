@@ -10,4 +10,6 @@ urlpatterns=[
     #path('api/v1/register', RegisterWaitressAPI.as_view()),
     path('api/table_resto', views.TableRestoListApiView.as_view()),
     path('api/table_resto/<int:id>', views.TableRestoDetailApiView.as_view()),
+    path('api/table_resto_list', views.TableRestoGetPostApiView.as_view()),
+    path('api/table_resto_upddel/<int:pk>', views.TableRestoGetUpdateDeleteApiView.as_view()),
 ]

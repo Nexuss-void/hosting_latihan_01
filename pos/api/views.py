@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import permissions
+from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIView
 from pos_app.models import User,TabelResto
 from api.serializers import TableRestoSerializer
 
@@ -13,12 +14,12 @@ class TableRestoListApiView(APIView):
     
     def post(self,request,*args,**kwargs):
         data={
-            # 'code':request.query_params.get('code'),
-            #  'name':request.query_params.get('name'),
-            #  'capacity':request.query_params.get('capacity'),
-            'code':request.data.get('code'),
-            'name':request.data.get('name'),
-            'capacity':request.data.get('capacity'),
+            'code':request.query_params.get('code'),
+             'name':request.query_params.get('name'),
+             'capacity':request.query_params.get('capacity'),
+            # 'code':request.data.get('code'),
+            # 'name':request.data.get('name'),
+            # 'capacity':request.data.get('capacity'),
         }
         serializer=TableRestoSerializer(data=data)
         if serializer.is_valid():
@@ -69,16 +70,16 @@ class TableRestoDetailApiView(APIView):
             )
         
         data={
-            # 'code': request.data.get('code'),
-            # 'name': request.data.get('name'),
-            # 'capacity': request.data.get('capacity'),
-            # 'table_status': request.data.get('table_status'),
-            # 'status': request.data.get('status'),
-            'code': request.query_params.get('code'),
-            'name': request.query_params.get('name'),
-            'capacity': request.query_params.get('capacity'),
-            'table_status': request.query_params.get('table_status'),
-            'status': request.query_params.get('status'),
+            'code': request.data.get('code'),
+            'name': request.data.get('name'),
+            'capacity': request.data.get('capacity'),
+            'table_status': request.data.get('table_status'),
+            'status': request.data.get('status'),
+            # 'code': request.query_params.get('code'),
+            # 'name': request.query_params.get('name'),
+            # 'capacity': request.query_params.get('capacity'),
+            # 'table_status': request.query_params.get('table_status'),
+            # 'status': request.query_params.get('status'),
         }
         serializer=TableRestoSerializer(instance=table_resto_instance,data=data,partial=True)
         if serializer.is_valid():
@@ -109,3 +110,11 @@ class TableRestoDetailApiView(APIView):
             'message':'Delete Data Berhasil....',
         }
         return Response(response,status=status.HTTP_200_OK)
+    
+class TableRestoGetPostApiView(ListCreateAPIView):
+    serializer_class=TableRestoSerializer
+    queryset=TabelResto.objects.all()
+
+class TableRestoGetUpdateDeleteApiView(RetrieveUpdateDestroyAPIView):
+    serializer_class=TableRestoSerializer
+    queryset=TabelResto.objects.all()
