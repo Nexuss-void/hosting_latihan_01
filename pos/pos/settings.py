@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'pos_app',
     #'api',
     'rest_framework',
+    'rest_framework.authtoken'#for token
 ]
 
 #Customize model user
@@ -104,6 +105,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+#instalansi token nya
+REST_FRAMEWORK={
+    'DEFAULT_AUTHENTICATION_CLASSES':[
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        ],
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/

@@ -3,8 +3,14 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import permissions
 from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIView
-from pos_app.models import User,TabelResto
-from api.serializers import TableRestoSerializer
+from pos_app.models import (User,TabelResto,MenuResto,StatusModel)
+from api.serializers import (TableRestoSerializer,RegisterUserSerializer,LoginSerializer,MenuRestoSerializer)
+from rest_framework import generics
+from rest_framework.authtoken.models import Token
+from django.contrib.auth import login as django_login,logout as django_logout
+from django.http import HttpResponse , JsonResponse
+from rest_framework.authentication import SessionAuthentication,BasicAuthentication
+from rest_framework.permissions import IsAuthenticated,AllowAny
 
 class TableRestoListApiView(APIView):
     def get(self,request,*args,**kwargs):
@@ -118,3 +124,59 @@ class TableRestoGetPostApiView(ListCreateAPIView):
 class TableRestoGetUpdateDeleteApiView(RetrieveUpdateDestroyAPIView):
     serializer_class=TableRestoSerializer
     queryset=TabelResto.objects.all()
+
+class RegisterUserAPIView(APIView):
+    serializer_class=RegisterUserSerializer
+
+    def post(self,request,format=None):
+        serializer=self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            response={
+                'status':status.HTTP_201_CREATED,
+                'message':'Selamat anda telah terdaftar....',
+                'data':serializer.data,
+            }
+            return Response(response,status=status.HTTP_201_CREATED)
+        return Response({
+                    'status': status.HTTP_400_BAD_REQUEST,
+                    'data':serializer.errors,
+                },status=status.HTTP_400_BAD_REQUEST)
+    
+class LoginView(APIView):
+    serializer_class=LoginSerializer
+
+    def post(self,request):
+        serializer=LoginSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user=serializer.validated_data['user']
+        django_login(request,user)
+        token,created=Token.objects.get_or_create(user=user)
+        return JsonResponse({
+            'status':200,
+            'message':'Selamat Berhasil Masuk....',
+            'data':{
+                'token':token.key,
+                'id':user.id,
+                'first_name':user.first_name,
+                'last_name':user.last_name,
+                'email':user.email,
+                'is_active':user.is_active,
+                'is_waitress':user.is_waitress,
+            },
+        })
+
+class MenuRestoView(APIView):
+    authentication_class=[SessionAuthentication, BasicAuthentication]
+
+    def get(self,request,*args,**kwargs):
+        menu_restos=MenuResto.objects.select_related('status').filter(status=StatusModel.objects.first())
+        serializer=MenuRestoSerializer(menu_restos,many=True)
+        response={
+                'status':status.HTTP_200_OK,
+                'message':'Pembacaan seluruh data berhasil....',
+                'user':str(request.user),
+                'auth':str(request.auth),
+                'data':serializer.data,
+            }
+        return Response(response,status=status.HTTP_200_OK)

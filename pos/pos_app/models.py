@@ -32,3 +32,35 @@ class TabelResto(models.Model):
 
     def __str__(self):
         return self.name
+    
+class StatusModel(models.Model):
+    menu_status_choice=(
+        ("Ada","Ada"),
+        ("Tidak Ada","Tidak Ada")
+    )
+    status_choices = (
+        ("Aktif","Aktif"),
+        ("Tidak Aktif","Tidak Aktif")
+    )
+    status=models.CharField(max_length=15,choices=status_choices,default="Aktif") 
+    menu_status=models.CharField(max_length=15,choices=menu_status_choice,default="Ada")
+
+    def __str__(self):
+        return f"Status: {self.status}, Menu: {self.menu_status}"
+
+    
+class MenuResto(models.Model):
+    code = models.CharField(max_length=20)
+    name=models.CharField(max_length=100)
+    price=models.FloatField(default=0.00)
+    description=models.CharField(default="-")
+    image_menu=models.ImageField(upload_to="menu_images/",blank=True,null=True)
+    category=models.CharField(max_length=100)
+    status=models.ForeignKey(StatusModel,related_name="status_of_menu",blank=True,null=True,on_delete=models.SET_NULL)
+    create_on = models.DateTimeField (auto_now_add=True)
+    last_modified= models.DateField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.name} - {self.price}"
+    
+
