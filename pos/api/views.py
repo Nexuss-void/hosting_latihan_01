@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import permissions
 from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIView
-from pos_app.models import (User,TabelResto,MenuResto,StatusModel)
+from pos_app.models import (User,TabelResto,MenuResto,StatusModel,Category)
 from api.serializers import (TableRestoSerializer,RegisterUserSerializer,LoginSerializer,MenuRestoSerializer)
 from rest_framework import generics
 from rest_framework.authtoken.models import Token
@@ -11,6 +11,9 @@ from django.contrib.auth import login as django_login,logout as django_logout
 from django.http import HttpResponse , JsonResponse
 from rest_framework.authentication import SessionAuthentication,BasicAuthentication
 from rest_framework.permissions import IsAuthenticated,AllowAny
+from .paginators import CustomPagination
+from rest_framework.filters import OrderingFilter
+from django_filters.rest_framework import DjangoFilterBackend
 
 class TableRestoListApiView(APIView):
     def get(self,request,*args,**kwargs):
@@ -168,6 +171,7 @@ class LoginView(APIView):
 
 class MenuRestoView(APIView):
     authentication_class=[SessionAuthentication, BasicAuthentication]
+    permission_classes=[IsAuthenticated]
 
     def get(self,request,*args,**kwargs):
         menu_restos=MenuResto.objects.select_related('status').filter(status=StatusModel.objects.first())
@@ -180,3 +184,12 @@ class MenuRestoView(APIView):
                 'data':serializer.data,
             }
         return Response(response,status=status.HTTP_200_OK)
+    
+class MenuRestoFilterApi(generics.ListAPIView):
+    queryset=MenuResto.objects.all()
+    serializer_class=MenuRestoSerializer
+    pagination_class=CustomPagination
+    permission_classes=[permissions.IsAuthenticated]
+    filter_backends=[DjangoFilterBackend, OrderingFilter]
+    filterset_fields=['name',]
+    ordering_filter=['created_on']

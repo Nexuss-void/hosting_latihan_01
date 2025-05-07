@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'pos_app',
     #'api',
     'rest_framework',
-    'rest_framework.authtoken'#for token
+    'rest_framework.authtoken',#for token
+    'django_filters',
 ]
 
 #Customize model user
@@ -114,7 +115,11 @@ REST_FRAMEWORK={
         ],
     'DEFAULT_PERMISSION_CLASSES':[
         'rest_framework.permissions.AllowAny',
-        ]
+        ],
+    'DEFAULT_PAGINATION_CLASSES': 'rest_framework.pagination.LimitOffsetPagination',
+    'DEFAULT_FILTER_BACKENDS':[
+        'django_filters.rest_framework.DjangoFilterBackend',
+        ],
 }
 
 # Internationalization

@@ -34,29 +34,46 @@ class TabelResto(models.Model):
         return self.name
     
 class StatusModel(models.Model):
-    menu_status_choice=(
-        ("Ada","Ada"),
-        ("Tidak Ada","Tidak Ada")
-    )
     status_choices = (
         ("Aktif","Aktif"),
         ("Tidak Aktif","Tidak Aktif")
     )
     status=models.CharField(max_length=15,choices=status_choices,default="Aktif") 
-    menu_status=models.CharField(max_length=15,choices=menu_status_choice,default="Ada")
 
     def __str__(self):
-        return f"Status: {self.status}, Menu: {self.menu_status}"
+        return self.status
+    
+class Category(models.Model):
+    status_choices = (
+        ("Aktif","Aktif"),
+        ("Tidak Aktif","Tidak Aktif")
+    )
+    name=models.CharField(max_length=100)
+    status=models.CharField(max_length=15,choices=status_choices,default="Aktif")
+    user_create= models.ForeignKey(User,related_name="user_create_category",blank=True,null=True,on_delete=models.SET_NULL)
+    user_update= models.ForeignKey(User,related_name="user_update_category",blank=True,null=True,on_delete=models.SET_NULL)
+    create_on = models.DateTimeField (auto_now_add=True)
+    last_modified= models.DateField(auto_now=True)
+
+    def __str__(self):
+        return self.name
 
     
 class MenuResto(models.Model):
+    menu_status_choice=(
+        ("Ada","Ada"),
+        ("Tidak Ada","Tidak Ada")
+    )
     code = models.CharField(max_length=20)
     name=models.CharField(max_length=100)
     price=models.FloatField(default=0.00)
     description=models.CharField(default="-")
-    image_menu=models.ImageField(upload_to="menu_images/",blank=True,null=True)
-    category=models.CharField(max_length=100)
+    image_menu=models.ImageField(default='default_images/empt.jpg',upload_to="menu_images/",blank=True,null=True)
+    category=models.ForeignKey(Category,related_name='category_menu',blank=True,null=True,on_delete=models.SET_NULL)
     status=models.ForeignKey(StatusModel,related_name="status_of_menu",blank=True,null=True,on_delete=models.SET_NULL)
+    menu_status=models.CharField(max_length=15,choices=menu_status_choice,default="Ada")
+    user_create= models.ForeignKey(User,related_name="user_create_menu",blank=True,null=True,on_delete=models.SET_NULL)
+    user_update= models.ForeignKey(User,related_name="user_update_menu",blank=True,null=True,on_delete=models.SET_NULL)
     create_on = models.DateTimeField (auto_now_add=True)
     last_modified= models.DateField(auto_now=True)
 

@@ -74,4 +74,4 @@ class LoginSerializer(serializers.Serializer):
 class MenuRestoSerializer(serializers.ModelSerializer):
     class Meta:
         model=MenuResto
-        fields=('id','code','name','price','description','image_menu')
+        fields=('id','code','name','price','description','image_menu','category','status','menu_status')
