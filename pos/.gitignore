@@ -1,0 +1,8 @@
+# Ignore the SQLite database
+db.sqlite3
+
+# Ignore virtual environment
+env/
+
+# Ignore environment variable files
+.env
