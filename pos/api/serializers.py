@@ -5,7 +5,7 @@ from rest_framework.validators import UniqueValidator
 from django.core.exceptions import ValidationError
 from django.contrib.auth.password_validation import validate_password
 
-class TableRestoSerializer(serializers.ModelSerializer):
+class  TableRestoSerializer(serializers.ModelSerializer):
     class Meta:
         model=TabelResto
         fields=('id','code','name','capacity','table_status','status')

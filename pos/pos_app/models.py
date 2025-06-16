@@ -58,13 +58,21 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-    
+def increment_menu_resto_code():
+        last_code = MenuResto.objects.all().order_by('id').last()
+        if not last_code:
+            return 'MN-0001'
+        code = last_code.code
+        code_int = int(code[3:7])
+        new_code_int = code_int + 1
+        return 'MN-' + str(new_code_int).zfill(4)
+
 class MenuResto(models.Model):
     menu_status_choice=(
         ("Ada","Ada"),
         ("Tidak Ada","Tidak Ada")
     )
-    code = models.CharField(max_length=20)
+    code = models.CharField(max_length=20,default=increment_menu_resto_code, editable = False)
     name=models.CharField(max_length=100)
     price=models.FloatField(default=0.00)
     description=models.CharField(default="-")

@@ -23,12 +23,12 @@ class TableRestoListApiView(APIView):
     
     def post(self,request,*args,**kwargs):
         data={
-            'code':request.query_params.get('code'),
-             'name':request.query_params.get('name'),
-             'capacity':request.query_params.get('capacity'),
-            # 'code':request.data.get('code'),
-            # 'name':request.data.get('name'),
-            # 'capacity':request.data.get('capacity'),
+            # 'code':request.query_params.get('code'),
+            #  'name':request.query_params.get('name'),
+            #  'capacity':request.query_params.get('capacity'),
+            'code':request.data.get('code'),
+            'name':request.data.get('name'),
+            'capacity':request.data.get('capacity'),
         }
         serializer=TableRestoSerializer(data=data)
         if serializer.is_valid():
