@@ -1,1 +1,1 @@
-web: gunicorn pos.pos.wsgi
+web: bash -c "python manage.py migrate && gunicorn pos.pos.wsgi"
