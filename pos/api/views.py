@@ -14,7 +14,11 @@ from rest_framework.permissions import IsAuthenticated,AllowAny
 from .paginators import CustomPagination
 from rest_framework.filters import OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
+
+@method_decorator(csrf_exempt, name='dispatch')
 class TableRestoListApiView(APIView):
     def get(self,request,*args,**kwargs):
         table_restos=TabelResto.objects.all()
