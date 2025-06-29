@@ -16,7 +16,6 @@ from rest_framework.filters import OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
-from rest_framework.parsers import JSONParser,MultiPartParser
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -47,7 +46,6 @@ class TableRestoListApiView(APIView):
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
     
 class TableRestoDetailApiView(APIView):
-    parser_classes = [JSONParser,MultiPartParser]
     def get_object(self,id):
         try:
             return TabelResto.objects.get(id=id)
@@ -74,7 +72,6 @@ class TableRestoDetailApiView(APIView):
         }
         return Response(response,status=status.HTTP_200_OK)
     
-    parser_classes = [JSONParser,MultiPartParser]
     def put(self,request,id,*args,**kwargs):
         table_resto_instance=self.get_object(id) 
         if not table_resto_instance:
