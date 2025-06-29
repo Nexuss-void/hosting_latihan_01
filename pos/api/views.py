@@ -52,7 +52,6 @@ class TableRestoDetailApiView(APIView):
         except TabelResto.DoesNotExist:
             return None
         
-    parser_classes = [JSONParser,MultiPartParser]
     def get (self,request,id,*args,**kwargs):
         table_resto_instance=self.get_object(id)
         if not table_resto_instance:
