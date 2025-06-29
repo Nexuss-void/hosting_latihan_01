@@ -47,12 +47,14 @@ class TableRestoListApiView(APIView):
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
     
 class TableRestoDetailApiView(APIView):
+    parser_classes = [JSONParser,MultiPartParser]
     def get_object(self,id):
         try:
             return TabelResto.objects.get(id=id)
         except TabelResto.DoesNotExist:
             return None
-    
+        
+    parser_classes = [JSONParser,MultiPartParser]
     def get (self,request,id,*args,**kwargs):
         table_resto_instance=self.get_object(id)
         if not table_resto_instance:
