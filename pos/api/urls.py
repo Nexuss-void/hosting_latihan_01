@@ -1,7 +1,7 @@
 from django.urls import path,include
 from api import views
 from rest_framework.urlpatterns import format_suffix_patterns
-from .views import (TableRestoListApiView,TableRestoDetailApiView,RegisterUserAPIView,LoginView,MenuRestoView)
+from .views import (TableRestoListApiView,TableRestoDetailApiView,RegisterUserAPIView,LoginView,MenuRestoView,MenuRestoAdd)
 
 app_name='api'
 urlpatterns=[
@@ -15,6 +15,7 @@ urlpatterns=[
     path('api/register', views.RegisterUserAPIView.as_view()),
     path('api/login', views.LoginView.as_view()),
     path('api/menu-resto', MenuRestoView.as_view()),
+    path('api/menu-resto-add', MenuRestoAdd.as_view()),
     path('api/menu-resto-filter', views.MenuRestoFilterApi.as_view()),
     path('api/menu-resto-filter/', views.MenuRestoFilterApi.as_view(), name='menu-resto-filter'),
 ]

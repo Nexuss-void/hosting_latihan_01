@@ -16,6 +16,7 @@ from rest_framework.filters import OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
+from rest_framework.parsers import JSONParser
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -71,6 +72,7 @@ class TableRestoDetailApiView(APIView):
         }
         return Response(response,status=status.HTTP_200_OK)
     
+    parser_classes = [JSONParser]
     def put(self,request,id,*args,**kwargs):
         table_resto_instance=self.get_object(id) 
         if not table_resto_instance:
@@ -174,8 +176,8 @@ class LoginView(APIView):
         })
 
 class MenuRestoView(APIView):
-    authentication_class=[SessionAuthentication, BasicAuthentication]
-    permission_classes=[IsAuthenticated]
+    # authentication_class=[SessionAuthentication, BasicAuthentication]
+    # permission_classes=[IsAuthenticated]
 
     def get(self,request,*args,**kwargs):
         menu_restos=MenuResto.objects.select_related('status').filter(status=StatusModel.objects.first())
@@ -189,6 +191,9 @@ class MenuRestoView(APIView):
             }
         return Response(response,status=status.HTTP_200_OK)
     
+class MenuRestoAdd(ListCreateAPIView):
+    queryset=MenuResto.objects.all()
+    serializer_class=MenuRestoSerializer
 class MenuRestoFilterApi(generics.ListAPIView):
     queryset=MenuResto.objects.all()
     serializer_class=MenuRestoSerializer

@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-kti41m+yqi0^1s6f5c%gm!&ixm9x!i+x(ogelj_gx-d&c&82k7'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 # ALLOWED_HOSTS = []
@@ -115,8 +115,8 @@ AUTH_PASSWORD_VALIDATORS = [
 #instalansi token nya
 REST_FRAMEWORK={
     'DEFAULT_AUTHENTICATION_CLASSES':[
-        'rest_framework.authentication.TokenAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
+        # 'rest_framework.authentication.TokenAuthentication',
+        # 'rest_framework.authentication.BasicAuthentication',
         #'rest_framework.authentication.SessionAuthentication',
         ],
     'DEFAULT_PERMISSION_CLASSES':[
