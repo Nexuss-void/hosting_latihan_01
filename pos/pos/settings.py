@@ -95,7 +95,7 @@ DATABASES = {
 
     # 'default': dj_database_url.config(default=os.environ.get('mysql://root:anHiwjARgVsecmSFhovOEYgzFozbncrd@mysql.railway.internal:3306/railway'))
 
-    'default': dj_database_url.parse(
+    'default': dj_database_url.config(
         default=os.environ.get('mysql://root:anHiwjARgVsecmSFhovOEYgzFozbncrd@mysql.railway.internal:3306/railway'),
         engine='django.db.backends.mysql'
     )
