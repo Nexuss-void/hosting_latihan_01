@@ -4,5 +4,7 @@ db.sqlite3
 # Ignore virtual environment
 env/
 
-# Ignore environment variable files
-.env
+# # Ignore environment variable files
+# .env
+
+data.json
